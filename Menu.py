@@ -82,7 +82,8 @@ class Menu(QWidget):
     def activer_ajout_abonne(self):
         prenom = input("Entrez le prénom de l'abonné : ")
         nom = input("Entrez le nom de l'abonné : ")
-        if self.bibliotheque.ajouter_abonne(prenom, nom):
+        mail = input("Entrez le mail de l'abonné : ")
+        if self.bibliotheque.ajouter_abonne(prenom, nom, mail):
             print("Abonné ajouté avec succès.")
         else:
             print("L'abonné existe déjà.")
@@ -90,7 +91,8 @@ class Menu(QWidget):
     def activer_supprimer_abonne(self):
         prenom = input("Entrez le prénom de l'abonné : ")
         nom = input("Entrez le nom de l'abonné : ")
-        if self.bibliotheque.supprimer_abonne(prenom, nom):
+        mail = input("Entrez le mail de l'abonné : ")
+        if self.bibliotheque.supprimer_abonne(prenom, nom, mail):
             print("Abonné supprimer avec succès.")
         else:
             print("L'abonné n'existe pas.")

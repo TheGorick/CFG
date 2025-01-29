@@ -7,16 +7,16 @@ class Bibliotheque:
         self.emprunts = []
 
     # abonnées
-    def ajouter_abonne(self, prenom, nom):
+    def ajouter_abonne(self, prenom, nom, mail):
         for abonne in self.abonnes:
             if abonne.prenom == prenom and abonne.nom == nom:
                 return False  # Abonné déjà existant
-        self.abonnes.append(Abonnes.Abonnes(prenom, nom))
+        self.abonnes.append(Abonnes.Abonnes(prenom, nom, mail))
         return True
 
-    def supprimer_abonne(self, prenom, nom):
+    def supprimer_abonne(self, prenom, nom, mail):
         for abonne in self.abonnes:
-            if abonne.prenom == prenom and abonne.nom == nom:
+            if (abonne.prenom == prenom and abonne.nom == nom) or abonne.mail == mail:
                 self.abonnes.remove(abonne)
                 return True
         return False  # Abonné introuvable
