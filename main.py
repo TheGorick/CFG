@@ -26,10 +26,146 @@ Classe Documents
 
 """
 
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLineEdit
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLineEdit#, QInputDialog
 import sys
 from functools import partial
 
+class Abonnes:
+    _compteur_id = 0  # Attribut de classe
+
+    def __init__(self, prenom, nom):
+        Abonnes._compteur_id += 1
+        self._id = Abonnes._compteur_id  # Utiliser _id pour éviter le doublon avec la classe
+        self.prenom = prenom
+        self.nom = nom
+
+    def __str__(self):
+        return f'{self.get_id()} {self.prenom} {self.nom}'
+
+    # getters
+    def get_id(self):
+        return self._id
+
+    def get_prenom(self):
+        return self.prenom
+
+    def get_nom(self):
+        return self.nom
+
+    # setters
+    def set_prenom(self, prenom):
+        self.prenom = prenom
+
+    def set_nom(self, nom):
+        self.nom = nom
+
+class Documents:
+    _compteur_id = 0  # Attribut de classe
+
+    def __init__(self, sorte, titre, disponible = True):
+        Documents._compteur_id += 1
+        self._id = Documents._compteur_id  # Utiliser _id pour éviter le doublon avec la classe
+        self.sorte = sorte
+        self.titre = titre
+        self.disponible = disponible
+
+    def __str__(self):
+        return f'{self.get_id()} {self.sorte} {self.titre} {self.disponible}'
+
+    # getters
+    def get_id(self):
+        return self._id
+
+    def get_sorte(self):
+        return self.sorte
+
+    def get_titre(self):
+        return self.titre
+
+    def get_disponible(self):
+        return self.disponible
+
+    # setters
+    def set_sorte(self, sorte):
+        self.sorte = sorte
+
+    def set_titre(self, titre):
+        self.titre = titre
+
+    def set_disponible(self, disponible):
+        self.disponible = disponible
+
+    def changer_disponible(self):
+        self.disponible = not self.disponible
+        if self.disponible:
+            print(f"Le document '{self.titre}' est maintenant disponible.")
+        else:
+            print(f"Le document '{self.titre}' n'est plus disponible.")
+
+class Bibliotheque:
+    def __init__(self):
+        self.abonnes = []  # Liste des abonnés
+        self.documents = []  # Liste des documents
+        self.emprunts = []
+
+    # abonnées
+    def ajouter_abonne(self, prenom, nom):
+        for abonne in self.abonnes:
+            if abonne.prenom == prenom and abonne.nom == nom:
+                return False  # Abonné déjà existant
+        self.abonnes.append(Abonnes(prenom, nom))
+        return True
+
+    def supprimer_abonne(self, prenom, nom):
+        for abonne in self.abonnes:
+            if abonne.prenom == prenom and abonne.nom == nom:
+                self.abonnes.remove(abonne)
+                return True
+        return False  # Abonné introuvable
+
+    def afficher_abonnes(self):
+        if not self.abonnes:
+            print("Aucun abonné enregistré.")
+        for abonne in self.abonnes:
+            print(abonne)
+
+    # documents
+    def ajouter_document(self, sorte, titre):
+        for doc in self.documents:
+            if doc.titre == titre:
+                return False  # Document déjà existant
+        self.documents.append(Documents(sorte, titre))
+        return True
+
+    def supprimer_document(self, titre):
+        for doc in self.documents:
+            if doc.titre == titre:
+                self.documents.remove(doc)
+                return True
+        return False  # Document introuvable
+
+    def afficher_documents(self):
+        if not self.documents:
+            print("Aucun document enregistré.")
+        for doc in self.documents:
+            print(doc)
+
+    # emprunts
+    def retour(self, identifiant):
+        # Cherche le document par titre ou ID
+        for doc in self.documents:
+            if doc.get_titre() == identifiant or str(doc.get_id()) == identifiant:
+                doc.changer_disponible()
+                return True  # Statut changé
+        return False  # Document non trouvé
+
+    def afficher_emprunts(self):
+        documents_non_disponibles = [doc for doc in self.documents if not doc.get_disponible()]
+        if not documents_non_disponibles:
+            print("Aucun document indisponible.")
+        else:
+            for doc in documents_non_disponibles:
+                print(doc)
 
 class Menu(QWidget):
 
@@ -37,6 +173,7 @@ class Menu(QWidget):
         super().__init__()
         self.setWindowTitle("Menu")
         self.setGeometry(100, 100, 300, 400)
+        self.bibliotheque = Bibliotheque()
 
         layout = QVBoxLayout() # QVBoxLayout permet d'empiler les boutons verticalement.
 
@@ -91,50 +228,54 @@ class Menu(QWidget):
 
     def active_choix(self, choix):
         fonctions = {
-            1: self.ajouter_abonne,
-            2: self.supprimer_abonne,
-            3: self.afficher_abonnes,
-            4: self.ajouter_document,
-            5: self.supprimer_document,
-            6: self.afficher_documents,
-            7: self.ajouter_emprunt,
-            8: self.retour_emprunt,
-            9: self.afficher_emprunts,
+            1: self.activer_ajout_abonne,
+            2: self.activer_supprimer_abonne,
+            3: self.bibliotheque.afficher_abonnes,
+            4: self.activer_ajout_document,
+            5: self.activer_supprimer_document,
+            6: self.bibliotheque.afficher_documents,
+            7: self.activer_emprunt_retour,
+            8: self.activer_emprunt_retour,
+            9: self.bibliotheque.afficher_emprunts,
             10: self.close
         }
         fonctions[choix]()  # Appelle la fonction
 
-class Abonnes:
-    _compteur_id = 0  # Attribut de classe
-    def __init__(self, prenom, nom):
-        Abonnes._compteur_id += 1
-        self._id = Abonnes._compteur_id  # Utiliser _id pour éviter le doublon avec la classe
-        self.prenom = prenom
-        self.nom = nom
+    def activer_ajout_abonne(self):
+        prenom = input("Entrez le prénom de l'abonné : ")
+        nom = input("Entrez le nom de l'abonné : ")
+        if self.bibliotheque.ajouter_abonne(prenom, nom):
+            print("Abonné ajouté avec succès.")
+        else:
+            print("L'abonné existe déjà.")
 
-    def get_id(self):
-        return self._id  # Retourne l'ID unique de l'abonné
+    def activer_supprimer_abonne(self):
+        prenom = input("Entrez le prénom de l'abonné : ")
+        nom = input("Entrez le nom de l'abonné : ")
+        if self.bibliotheque.supprimer_abonne(prenom, nom):
+            print("Abonné supprimer avec succès.")
+        else:
+            print("L'abonné n'existe pas.")
 
-    def __str__(self):
-        return f'{self.get_id()} {self.prenom} {self.nom}'
+    def activer_ajout_document(self):
+        sorte = input("Entrez le type de document : ")
+        titre = input("Entrez le titre du document : ")
+        if self.bibliotheque.ajouter_document(sorte, titre):
+            print("Document ajouté avec succès.")
+        else:
+            print("Le document est déjà dans la bibliothèque.")
 
-"""class bibliotheque(abonnes):
-    def __init__(self):
-                
-class documents():
-    id_ABONNE = 0
-    def __init__(self, type, titre):
-        Documents.id_ABONNE += 1
-        
-        self.id_ABONNE = Documents.id_ABONNE
-        self.type
-"""
+    def activer_supprimer_document(self):
+        titre = input("Entrez le titre du document : ")
+        if self.bibliotheque.supprimer_document(titre):
+            print("Document supprimé avec succès.")
+        else:
+            print("Document n'existe pas.")
 
-"""a = Abonnes("Guillaume","Pinat")
-b = Abonnes("Caroline","Ceus-Dorphelus")
-print(a.get_id())
-print(b.get_id())
-print(a)"""
+    def activer_emprunt_retour(self):
+        identifiant = input("Entrez le titre ou l'ID du document : ")
+        if not self.bibliotheque.retour(identifiant):
+            print(f"Document '{identifiant}' non trouvé.")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
