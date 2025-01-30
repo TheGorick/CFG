@@ -1,5 +1,5 @@
 import Bibliotheque as Bibliotheque
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLineEdit
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLineEdit
 from functools import partial
 
 class Menu(QWidget):
@@ -25,8 +25,7 @@ class Menu(QWidget):
             QPushButton("Q - Quitter")
         ]
 
-        for i, bouton in enumerate(
-                self.boutons):  # Parcourt la liste des boutons tout en récupérant l'index (i) et l'objet bouton (bouton)
+        for i, bouton in enumerate(self.boutons):  # Parcourt la liste des boutons tout en récupérant l'index (i) et l'objet bouton (bouton)
             layout.addWidget(bouton)  # Ajout du bouton au layout
             bouton.clicked.connect(partial(self.active_choix, i + 1))  # CHAT GPT WAS HERE! Explication juste après
             """ 
@@ -34,7 +33,7 @@ class Menu(QWidget):
             On utilise donc lambda ou functools.partial pour ajouter un paramètre à active_choix().
 
             Problème sans lambda ou partial :
-            bouton.clicked.connect(self.active_choix(i + 1)) # Cette ligne exécuterait immédiatement self.active_choix(i + 1) au moment de la boucle, au lieu de l'attendre un clic et ce sera donc toujours le dernier index
+            bouton.clicked.connect(self.active_choix(i + 1)) # Cette ligne exécuterait immédiatement self.active_choix(i + 1) au moment de la boucle, au lieu d'attendre un clic et ce sera donc toujours le dernier index
 
             functools.partial est une fonction du module standard functools qui permet de préremplir certains arguments d'une fonction. Il retourne une nouvelle fonction avec ces arguments déjà fixés.
             C'est une alternative plus propre à lambda quand on doit passer des arguments à une fonction connectée à un signal PyQt.
@@ -49,20 +48,18 @@ class Menu(QWidget):
         self.setLayout(layout)
 
     def cleanup(self):
-        text = self.saisie.text().strip().lower()  # Récupère le texte, enlève les espaces et convertit en minuscules
+        text = self.saisie.text().strip()  # Récupère le texte et enlève les espaces
         self.saisie.clear()  # Efface le champ de saisie
         if text.isdigit():  # Si c'est un chiffre
             choix = int(text)  # Convertit le texte en entier
             if 1 <= choix <= 9:  # Si l'option est entre 1 et 9
                 self.active_choix(choix)  # Appelle la fonction active_choix avec l'option choisie
             else:
-                print(
-                    "Option invalide, veuillez entrer un chiffre entre 1 et 9.")  # Message d'erreur pour option invalide
+                print("Option invalide, veuillez entrer un chiffre entre 1 et 9.")  # Message d'erreur pour option invalide
         elif text.lower() == 'q':
             self.close()  # Ferme la fenêtre
         else:
-            print(
-                "Entrée invalide. Veuillez entrer un chiffre entre 1 et 9 ou 'Q' pour quitter.")  # Message pour entrée invalide
+            print("Entrée invalide. Veuillez entrer un chiffre entre 1 et 9 ou 'Q' pour quitter.")  # Message pour entrée invalide
 
     def active_choix(self, choix):
         fonctions = {

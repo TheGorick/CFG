@@ -2,14 +2,14 @@ import Documents as Documents, Abonnes as Abonnes
 
 class Bibliotheque:
     def __init__(self):
-        self.abonnes = []  # Liste des abonnés
-        self.documents = []  # Liste des documents
+        self.abonnes = []
+        self.documents = []
         self.emprunts = []
 
     # abonnées
     def ajouter_abonne(self, prenom, nom, mail):
         for abonne in self.abonnes:
-            if abonne.prenom == prenom and abonne.nom == nom:
+            if abonne.prenom == prenom and abonne.nom == nom and abonne.mail == mail:
                 return False  # Abonné déjà existant
         self.abonnes.append(Abonnes.Abonnes(prenom, nom, mail))
         return True
