@@ -2,6 +2,8 @@
 #Félix-Antonin Noël
 #Guillaume Pinat
 
+#TP Mi-Session
+
 import Menu as Menu
 from PyQt6.QtWidgets import QApplication
 import sys

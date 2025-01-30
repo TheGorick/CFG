@@ -1,3 +1,7 @@
+#Caroline Ceus-Dorphelus
+#Félix-Antonin Noël
+#Guillaume Pinat
+
 class Documents:
     _compteur_id = 0  # Attribut de classe
 

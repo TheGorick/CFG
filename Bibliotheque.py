@@ -1,3 +1,7 @@
+#Caroline Ceus-Dorphelus
+#Félix-Antonin Noël
+#Guillaume Pinat
+
 import Documents as Documents, Abonnes as Abonnes
 
 class Bibliotheque:

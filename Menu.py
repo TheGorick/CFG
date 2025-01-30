@@ -1,3 +1,7 @@
+#Caroline Ceus-Dorphelus
+#Félix-Antonin Noël
+#Guillaume Pinat
+
 import Bibliotheque as Bibliotheque
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLineEdit
 from functools import partial
