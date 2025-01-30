@@ -1,6 +1,7 @@
 #Caroline Ceus-Dorphelus
 #Félix-Antonin Noël
 #Guillaume Pinat
+#commentaire
 
 class Abonnes:
     _compteur_id = 0  # Attribut de classe
