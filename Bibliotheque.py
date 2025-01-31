@@ -32,11 +32,11 @@ class Bibliotheque:
             print(abonne)
 
     # documents
-    def ajouter_document(self, sorte, titre):
+    def ajouter_document(self, classification, titre):
         for doc in self.documents:
             if doc.titre == titre:
                 return False  # Document déjà existant
-        self.documents.append(Documents.Documents(sorte, titre))
+        self.documents.append(Documents.Documents(classification, titre))
         return True
 
     def supprimer_document(self, titre):
