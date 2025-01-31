@@ -5,42 +5,42 @@
 class Documents:
     _compteur_id = 0  # Attribut de classe
 
-    def __init__(self, sorte, titre, disponible = True):
+    def __init__(self, classification, titre, dispo = True):
         Documents._compteur_id += 1
         self._id = Documents._compteur_id  # Utiliser _id pour éviter le doublon avec la classe
-        self.sorte = sorte
+        self.classification = classification
         self.titre = titre
-        self.disponible = disponible
+        self.dispo = dispo
 
     def __str__(self):
-        return f'{self.get_id()} {self.sorte} {self.titre} {self.disponible}'
+        return f'ID: {self.get_id()} Type: {self.classification} Titre: {self.titre} Disponible: {"Oui" if self.dispo else "Non"}'
 
     # getters
     def get_id(self):
         return self._id
 
-    def get_sorte(self):
-        return self.sorte
+    def get_classification(self):
+        return self.classification
 
     def get_titre(self):
         return self.titre
 
-    def get_disponible(self):
-        return self.disponible
+    def get_dispo(self):
+        return self.dispo
 
     # setters
-    def set_sorte(self, sorte):
-        self.sorte = sorte
+    def set_classification(self, classification):
+        self.classification = classification
 
     def set_titre(self, titre):
         self.titre = titre
 
-    def set_disponible(self, disponible):
-        self.disponible = disponible
+    def set_dispo(self, dispo):
+        self.dispo = dispo
 
-    def changer_disponible(self):
-        self.disponible = not self.disponible
-        if self.disponible:
-            print(f"Le document '{self.titre}' est maintenant disponible.")
+    def changer_dispo(self):
+        self.dispo = not self.dispo
+        if self.dispo:
+            print(f"Retour de '{self.titre}'.")
         else:
-            print(f"Le document '{self.titre}' n'est plus disponible.")
+            print(f"Emprunt de '{self.titre}'.")

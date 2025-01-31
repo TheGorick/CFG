@@ -32,11 +32,11 @@ class Bibliotheque:
             print(abonne)
 
     # documents
-    def ajouter_document(self, sorte, titre):
+    def ajouter_document(self, classification, titre):
         for doc in self.documents:
             if doc.titre == titre:
                 return False  # Document déjà existant
-        self.documents.append(Documents.Documents(sorte, titre))
+        self.documents.append(Documents.Documents(classification, titre))
         return True
 
     def supprimer_document(self, titre):
@@ -57,14 +57,14 @@ class Bibliotheque:
         # Cherche le document par titre ou ID
         for doc in self.documents:
             if doc.get_titre() == identifiant or str(doc.get_id()) == identifiant:
-                doc.changer_disponible()
+                doc.changer_dispo()
                 return True  # Statut changé
         return False  # Document non trouvé
 
     def afficher_emprunts(self):
-        documents_non_disponibles = [doc for doc in self.documents if not doc.get_disponible()]
-        if not documents_non_disponibles:
+        documents_non_dispo = [doc for doc in self.documents if not doc.get_dispo()]
+        if not documents_non_dispo:
             print("Aucun document emprunté.")
         else:
-            for doc in documents_non_disponibles:
+            for doc in documents_non_dispo:
                 print(doc)

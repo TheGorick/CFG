@@ -99,9 +99,9 @@ class Menu(QWidget):
             print("L'abonné n'existe pas.")
 
     def activer_ajout_document(self):
-        sorte = input("Entrez le type de document : ")
+        classification = input("Entrez le type de document : ")
         titre = input("Entrez le titre du document : ")
-        if self.bibliotheque.ajouter_document(sorte, titre):
+        if self.bibliotheque.ajouter_document(classification, titre):
             print("Document ajouté avec succès.")
         else:
             print("Le document est déjà dans la bibliothèque.")
