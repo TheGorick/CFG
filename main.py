@@ -1,16 +1,14 @@
-#Caroline Ceus-Dorphelus
-#Félix-Antonin Noël
-#Guillaume Pinat
+# Guillaume Pinat
 
 #TP Mi-Session
 
-import Menu as Menu
+from Menu import Menu
 from PyQt6.QtWidgets import QApplication
 import sys
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = Menu.Menu()
+    window = Menu()
     window.show()
     sys.exit(app.exec())
